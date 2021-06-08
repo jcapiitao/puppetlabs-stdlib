@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'uri'
+require 'erb'
 #
 #  uriescape.rb
 #  Please note: This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
@@ -26,9 +26,9 @@ module Puppet::Parser::Functions
 
     result = if value.is_a?(Array)
                # Numbers in Puppet are often string-encoded which is troublesome ...
-               value.map { |i| i.is_a?(String) ? URI.escape(i) : i }
+               value.map { |i| i.is_a?(String) ? ERB::Util.url_encode(i) : i }
              else
-               URI.escape(value)
+               ERB::Util.url_encode(value)
              end
 
     return result
